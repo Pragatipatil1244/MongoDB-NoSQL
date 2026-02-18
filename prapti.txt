@@ -1,0 +1,341 @@
+Please enter a MongoDB connection string (Default: mongodb://localhost/):
+
+Current Mongosh Log ID: 6994365ab9b78812f57c2906
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.7.0
+Using MongoDB:          8.2.5
+Using Mongosh:          2.7.0
+
+For mongosh info see: https://www.mongodb.com/docs/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2026-02-17T13:04:37.123+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+test> show dbs
+admin    40.00 KiB
+config  108.00 KiB
+local    40.00 KiB
+simple    8.00 KiB
+test> use Collage_63
+switched to db Collage_63
+Collage_63> db.createCollection("teacherinfo")
+{ ok: 1 }
+Collage_63> show collections
+teacherinfo
+Collage_63> db.createCollection("studentinfo")
+{ ok: 1 }
+Collage_63> show collection
+MongoshInvalidInputError: [COMMON-10001] 'collection' is not a valid argument for "show".
+Collage_63> show collections
+studentinfo
+teacherinfo
+Collage_63> db.createCollection("courseinfo")
+{ ok: 1 }
+Collage_63> show collections
+courseinfo
+studentinfo
+teacherinfo
+Collage_63> use college
+switched to db college
+college> dbs
+ReferenceError: dbs is not defined
+college> db
+college
+college> show collections
+
+college> show collections
+teacherinfo
+college> db.createCollection("courseinfo")
+{ ok: 1 }
+college> db.createCollection("studentinfo")
+{ ok: 1 }
+college> s
+ReferenceError: s is not defined
+college> show collections
+courseinfo
+studentinfo
+teacherinfo
+college> show collections
+courseinfo
+studentinfo
+teacherinfo
+college> show dbs
+Collage_63   24.00 KiB
+admin        40.00 KiB
+college      24.00 KiB
+config      108.00 KiB
+local        40.00 KiB
+simple        8.00 KiB
+college> use college
+already on db college
+college> db.studentinfo
+college.studentinfo
+college> db.studentinfo.insertMany([{name:'sunil',age:29,cgpa:8},{name:'shreya',age:21,cgpa:8.9},{name:'ved',age:10,cgpa:9.9}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('69943896b9b78812f57c2907'),
+    '1': ObjectId('69943896b9b78812f57c2908'),
+    '2': ObjectId('69943896b9b78812f57c2909')
+  }
+}
+college> db.teacherinfo
+college.teacherinfo
+college> db.teacherinfo.insertOne({name:"gautam ghambir",age:45,subject:"head coach",exp:10})
+{
+  acknowledged: true,
+  insertedId: ObjectId('69943a7eb9b78812f57c290a')
+}
+college> db.teacherinfo.insertMany([{name:"sachin",age:50,subject:"batting coach",exp:18},{name:"ravi sh",age:52,subject:"assistant coach",exp:15},{name:"anil k",age:49,subject:["phejo coach","bowling coach"],exp:20}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('69943accb9b78812f57c290b'),
+    '1': ObjectId('69943accb9b78812f57c290c'),
+    '2': ObjectId('69943accb9b78812f57c290d')
+  }
+}
+college> db.studentinfo.find()
+[
+  {
+    _id: ObjectId('69943896b9b78812f57c2907'),
+    name: 'sunil',
+    age: 29,
+    cgpa: 8
+  },
+  {
+    _id: ObjectId('69943896b9b78812f57c2908'),
+    name: 'shreya',
+    age: 21,
+    cgpa: 8.9
+  },
+  {
+    _id: ObjectId('69943896b9b78812f57c2909'),
+    name: 'ved',
+    age: 10,
+    cgpa: 9.9
+  }
+]
+college> db.studentinfo.find().limit(1)
+[
+  {
+    _id: ObjectId('69943896b9b78812f57c2907'),
+    name: 'sunil',
+    age: 29,
+    cgpa: 8
+  }
+]
+college> db.studentinfo.find().sort((age:1})
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:31)
+
+> 1 | db.studentinfo.find().sort((age:1})
+    |                                ^
+  2 |
+
+college> db.studentinfo.find().sort({age:1})
+[
+  {
+    _id: ObjectId('69943896b9b78812f57c2909'),
+    name: 'ved',
+    age: 10,
+    cgpa: 9.9
+  },
+  {
+    _id: ObjectId('69943896b9b78812f57c2908'),
+    name: 'shreya',
+    age: 21,
+    cgpa: 8.9
+  },
+  {
+    _id: ObjectId('69943896b9b78812f57c2907'),
+    name: 'sunil',
+    age: 29,
+    cgpa: 8
+  }
+]
+college> db.studentinfo.find().sort({age:1}).limit(1)
+[
+  {
+    _id: ObjectId('69943896b9b78812f57c2909'),
+    name: 'ved',
+    age: 10,
+    cgpa: 9.9
+  }
+]
+college> db.studentinfo.find().sort({age:-1}).limit(1)
+[
+  {
+    _id: ObjectId('69943896b9b78812f57c2907'),
+    name: 'sunil',
+    age: 29,
+    cgpa: 8
+  }
+]
+college> db.studentinfo.find({age:20},{name:true,_id:false})
+
+college> db.studentinfo.find({age:20},{name:true,age:true,_id:false})
+
+college> db.studentinfo.find({age:21},{name:true,age:true,_id:false})
+[ { name: 'shreya', age: 21 } ]
+college> db.studentinfo.find({age:21},{name:true,_id:false})
+[ { name: 'shreya' } ]
+college> db
+college
+college> db.teacherinfo
+college.teacherinfo
+college> db.teacherinfo.updateOne({name:"anil k"},{$set:{exp=22}})
+|
+| db
+Uncaught:
+SyntaxError: Invalid shorthand property initializer. (1:51)
+
+> 1 | db.teacherinfo.updateOne({name:"anil k"},{$set:{exp=22}})
+    |                                                    ^
+  2 |
+  3 | db
+  4 |
+
+college> db.teacherinfo.updateOne({name:"anil k"},{$set:{exp=22}})
+|
+|
+| db
+|
+Uncaught:
+SyntaxError: Invalid shorthand property initializer. (1:51)
+
+> 1 | db.teacherinfo.updateOne({name:"anil k"},{$set:{exp=22}})
+    |                                                    ^
+  2 |
+  3 |
+  4 | db
+
+college> db
+college
+college> db.teacherinfo
+college.teacherinfo
+college> db.teacherinfo
+college.teacherinfo
+college>  db.teacherinfo.updateOne({name:"anil k"},{$set:{exp:22}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+college>  db.teacherinfo.updateOne({},{$set:{exp:28}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+college> db.teacherinfo.find()
+[
+  {
+    _id: ObjectId('69943a7eb9b78812f57c290a'),
+    name: 'gautam ghambir',
+    age: 45,
+    subject: 'head coach',
+    exp: 28
+  },
+  {
+    _id: ObjectId('69943accb9b78812f57c290b'),
+    name: 'sachin',
+    age: 50,
+    subject: 'batting coach',
+    exp: 18
+  },
+  {
+    _id: ObjectId('69943accb9b78812f57c290c'),
+    name: 'ravi sh',
+    age: 52,
+    subject: 'assistant coach',
+    exp: 15
+  },
+  {
+    _id: ObjectId('69943accb9b78812f57c290d'),
+    name: 'anil k',
+    age: 49,
+    subject: [ 'phejo coach', 'bowling coach' ],
+    exp: 22
+  }
+]
+college>  db.teacherinfo.updateMany({},{$set:{exp:28}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 3,
+  upsertedCount: 0
+}
+college> db.teacherinfo.find()
+[
+  {
+    _id: ObjectId('69943a7eb9b78812f57c290a'),
+    name: 'gautam ghambir',
+    age: 45,
+    subject: 'head coach',
+    exp: 28
+  },
+  {
+    _id: ObjectId('69943accb9b78812f57c290b'),
+    name: 'sachin',
+    age: 50,
+    subject: 'batting coach',
+    exp: 28
+  },
+  {
+    _id: ObjectId('69943accb9b78812f57c290c'),
+    name: 'ravi sh',
+    age: 52,
+    subject: 'assistant coach',
+    exp: 28
+  },
+  {
+    _id: ObjectId('69943accb9b78812f57c290d'),
+    name: 'anil k',
+    age: 49,
+    subject: [ 'phejo coach', 'bowling coach' ],
+    exp: 28
+  }
+]
+college>  db.teacherinfo.updateMany({},{$unset:{exp:28}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+college> db.teacherinfo.find()
+[
+  {
+    _id: ObjectId('69943a7eb9b78812f57c290a'),
+    name: 'gautam ghambir',
+    age: 45,
+    subject: 'head coach'
+  },
+  {
+    _id: ObjectId('69943accb9b78812f57c290b'),
+    name: 'sachin',
+    age: 50,
+    subject: 'batting coach'
+  },
+  {
+    _id: ObjectId('69943accb9b78812f57c290c'),
+    name: 'ravi sh',
+    age: 52,
+    subject: 'assistant coach'
+  },
+  {
+    _id: ObjectId('69943accb9b78812f57c290d'),
+    name: 'anil k',
+    age: 49,
+    subject: [ 'phejo coach', 'bowling coach' ]
+  }
+]
+college>
